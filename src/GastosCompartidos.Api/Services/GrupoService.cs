@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GastosCompartidos.Api.Services;
 
-public class GrupoService(GastosCompartidosDbContext contexto) : IGrupoService
+public class GrupoService(GastosCompartidosDbContext contexto, ISaldoService saldoService) : IGrupoService
 {
     public async Task<List<GrupoResumenDto>> ListarMisGruposAsync(int usuarioId, CancellationToken ct)
     {
@@ -97,6 +97,12 @@ public class GrupoService(GastosCompartidosDbContext contexto) : IGrupoService
 
         var miembroAQuitar = grupo.Miembros.SingleOrDefault(m => m.UsuarioId == usuarioAQuitarId)
             ?? throw new NoEncontradoException("Ese usuario no es miembro del grupo.");
+
+        var saldoPendiente = await saldoService.ObtenerSaldoAsync(grupoId, usuarioAQuitarId, ct);
+        if (saldoPendiente != 0m)
+        {
+            throw new ConflictoException("No se puede quitar del grupo a un miembro con saldo pendiente.");
+        }
 
         contexto.MiembrosGrupo.Remove(miembroAQuitar);
         await contexto.SaveChangesAsync(ct);

@@ -122,9 +122,9 @@ _Pendiente — se completará cuando el proyecto esté montado._
 - [x] Registro / login con JWT
 - [x] CRUD de grupos y miembros
 - [x] CRUD de gastos
-- [ ] Cálculo de saldos
-- [ ] Algoritmo de "saldar cuentas"
-- [ ] Tests
+- [x] Cálculo de saldos
+- [x] Algoritmo de "saldar cuentas"
+- [x] Tests
 - [ ] Docker + GitHub Actions
 - [ ] README final con capturas y ejemplos
 
