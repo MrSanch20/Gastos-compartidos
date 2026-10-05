@@ -19,6 +19,7 @@ builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 builder.Services.AddScoped<IJwtGenerador, JwtGenerador>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IGrupoService, GrupoService>();
+builder.Services.AddScoped<IGastoService, GastoService>();
 
 var proveedorBaseDeDatos = builder.Configuration["BaseDeDatos:Proveedor"] ?? "Sqlite";
 var cadenaConexion = builder.Configuration.GetConnectionString("DefaultConnection");
