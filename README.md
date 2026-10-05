@@ -119,7 +119,7 @@ _Pendiente — se completará cuando el proyecto esté montado._
 
 - [x] Crear solución y proyectos
 - [x] Modelo de datos y base de datos
-- [ ] Registro / login con JWT
+- [x] Registro / login con JWT
 - [ ] CRUD de grupos y miembros
 - [ ] CRUD de gastos
 - [ ] Cálculo de saldos
