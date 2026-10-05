@@ -1,0 +1,37 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      # Por defecto usa SQLite para poder levantar el contenedor sin nada más.
+      # Para usar el servicio "db" de abajo, cambia estas dos líneas:
+      #   BaseDeDatos__Proveedor: PostgreSql
+      #   ConnectionStrings__DefaultConnection: "Host=db;Database=gastoscompartidos;Username=gastoscompartidos;Password=${POSTGRES_PASSWORD:-gastoscompartidos}"
+      BaseDeDatos__Proveedor: Sqlite
+      ConnectionStrings__DefaultConnection: "Data Source=/data/gastoscompartidos.db"
+      AplicarMigracionesAlArrancar: "true"
+      Jwt__Clave: "${JWT_CLAVE:?Define la variable de entorno JWT_CLAVE (o un archivo .env) antes de levantar el contenedor}"
+      Jwt__Emisor: GastosCompartidosApi
+      Jwt__Audiencia: GastosCompartidosClientes
+      Jwt__MinutosExpiracion: "120"
+    volumes:
+      - gastoscompartidos-data:/data
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: gastoscompartidos
+      POSTGRES_USER: gastoscompartidos
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-gastoscompartidos}"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  gastoscompartidos-data:
+  postgres-data:

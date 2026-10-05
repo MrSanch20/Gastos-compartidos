@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 using FluentValidation;
 using GastosCompartidos.Api.Data;
 using GastosCompartidos.Api.Middleware;
@@ -12,7 +13,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(opciones =>
+    {
+        // Los enums (RolGrupo, TipoReparto...) se exponen como texto ("PartesIguales") en vez
+        // de como números, para que la API sea legible sin tener que consultar el código.
+        opciones.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
@@ -92,6 +99,15 @@ builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationSc
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+// Aplica las migraciones pendientes al arrancar. Es opt-in (apagado por defecto) para no
+// interferir con los tests de integración, que montan su propio esquema; se activa en
+// Docker con la variable de entorno AplicarMigracionesAlArrancar=true.
+if (app.Configuration.GetValue<bool>("AplicarMigracionesAlArrancar"))
+{
+    using var scope = app.Services.CreateScope();
+    scope.ServiceProvider.GetRequiredService<GastosCompartidosDbContext>().Database.Migrate();
+}
 
 app.UseMiddleware<ManejadorExcepcionesMiddleware>();
 

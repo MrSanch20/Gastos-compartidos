@@ -18,7 +18,7 @@ public class GruposControllerTests(GastosCompartidosWebApplicationFactory fabric
         var grupo = (await respuestaCrear.Content.ReadFromJsonAsync<GrupoResumenDto>())!;
 
         var respuestaDetalle = await cliente.GetAsync($"/api/grupos/{grupo.Id}");
-        var detalle = (await respuestaDetalle.Content.ReadFromJsonAsync<GrupoDetalleDto>())!;
+        var detalle = (await respuestaDetalle.Content.ReadFromJsonAsync<GrupoDetalleDto>(AuthTestHelper.OpcionesJson))!;
 
         Assert.Single(detalle.Miembros);
         Assert.Equal(autor.UsuarioId, detalle.Miembros[0].UsuarioId);
