@@ -18,6 +18,7 @@ builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
 builder.Services.AddScoped<IJwtGenerador, JwtGenerador>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IGrupoService, GrupoService>();
 
 var proveedorBaseDeDatos = builder.Configuration["BaseDeDatos:Proveedor"] ?? "Sqlite";
 var cadenaConexion = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -60,19 +61,25 @@ builder.Services.AddSwaggerGen(opciones =>
     });
 });
 
-var claveJwt = builder.Configuration["Jwt:Clave"]
-    ?? throw new InvalidOperationException("Falta configurar 'Jwt:Clave' (usa user-secrets en desarrollo).");
-
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(opciones =>
+    .AddJwtBearer();
+
+// Se configura a través de IConfiguration inyectado (no leyendo builder.Configuration directamente)
+// para que las opciones se resuelvan de forma perezosa, con la configuración ya completa
+// (incluida la que sobrescriben los tests de integración).
+builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
+    .Configure<IConfiguration>((opciones, configuracion) =>
     {
+        var claveJwt = configuracion["Jwt:Clave"]
+            ?? throw new InvalidOperationException("Falta configurar 'Jwt:Clave' (usa user-secrets en desarrollo).");
+
         opciones.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidIssuer = builder.Configuration["Jwt:Emisor"],
+            ValidIssuer = configuracion["Jwt:Emisor"],
             ValidateAudience = true,
-            ValidAudience = builder.Configuration["Jwt:Audiencia"],
+            ValidAudience = configuracion["Jwt:Audiencia"],
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(claveJwt)),
             ValidateLifetime = true,
