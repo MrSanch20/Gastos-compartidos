@@ -453,6 +453,11 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Base de datos SQLite local de desarrollo
+*.db
+*.db-shm
+*.db-wal
+
 # content below from: https://github.com/github/gitignore/blob/main/Global/Windows.gitignore
 # Windows thumbnail cache files
 Thumbs.db

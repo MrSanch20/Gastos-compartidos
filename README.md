@@ -118,7 +118,7 @@ _Pendiente — se completará cuando el proyecto esté montado._
 ## ✅ Hoja de ruta
 
 - [x] Crear solución y proyectos
-- [ ] Modelo de datos y base de datos
+- [x] Modelo de datos y base de datos
 - [ ] Registro / login con JWT
 - [ ] CRUD de grupos y miembros
 - [ ] CRUD de gastos
