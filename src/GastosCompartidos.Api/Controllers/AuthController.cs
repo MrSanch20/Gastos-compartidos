@@ -17,7 +17,7 @@ public class AuthController(
     {
         await registroValidator.ValidateAndThrowAsync(request, ct);
         var respuesta = await authService.RegistrarAsync(request, ct);
-        return Ok(respuesta);
+        return StatusCode(StatusCodes.Status201Created, respuesta);
     }
 
     [HttpPost("login")]

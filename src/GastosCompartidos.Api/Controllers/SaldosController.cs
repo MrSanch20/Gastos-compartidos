@@ -33,6 +33,6 @@ public class SaldosController(
     {
         await registrarLiquidacionValidator.ValidateAndThrowAsync(request, ct);
         var liquidacion = await saldoService.RegistrarLiquidacionAsync(grupoId, request, UsuarioActualId, ct);
-        return Ok(liquidacion);
+        return CreatedAtAction(nameof(ObtenerSaldos), new { grupoId }, liquidacion);
     }
 }

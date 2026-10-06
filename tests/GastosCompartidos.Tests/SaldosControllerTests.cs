@@ -45,7 +45,7 @@ public class SaldosControllerTests(GastosCompartidosWebApplicationFactory fabric
         var respuestaRegistro = await admin.Cliente.PostAsJsonAsync(
             $"/api/grupos/{grupo.Id}/liquidaciones",
             new RegistrarLiquidacionRequest(pago.DeId, pago.ParaId, pago.Importe, null));
-        Assert.Equal(HttpStatusCode.OK, respuestaRegistro.StatusCode);
+        Assert.Equal(HttpStatusCode.Created, respuestaRegistro.StatusCode);
 
         var saldosFinales = (await (await admin.Cliente.GetAsync($"/api/grupos/{grupo.Id}/saldos"))
             .Content.ReadFromJsonAsync<List<SaldoDto>>())!;

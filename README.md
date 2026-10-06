@@ -176,7 +176,7 @@ qué a quién.
 curl -X POST http://localhost:8080/api/auth/registro \
   -H "Content-Type: application/json" \
   -d '{"nombre":"Ana","email":"ana@test.com","password":"ContrasenaSegura123"}'
-# -> 200 OK
+# -> 201 Created
 # {"token":"eyJhbGciOi...","expiraEn":"2026-10-05T23:01:26Z","usuarioId":1,"nombre":"Ana","email":"ana@test.com"}
 
 # Registrar al segundo usuario
@@ -225,7 +225,7 @@ curl -H "Authorization: Bearer $TOKEN_ANA" http://localhost:8080/api/grupos/1/sa
 curl -X POST http://localhost:8080/api/grupos/1/liquidaciones \
   -H "Authorization: Bearer $TOKEN_ANA" -H "Content-Type: application/json" \
   -d '{"deId": 2, "paraId": 1, "importe": 5}'
-# -> 200 OK; a partir de aquí /saldos devuelve 0.0 para ambas y /saldar no propone ya ningún pago
+# -> 201 Created; a partir de aquí /saldos devuelve 0.0 para ambas y /saldar no propone ya ningún pago
 ```
 
 ---

@@ -64,9 +64,9 @@ builder.Services.AddSwaggerGen(opciones =>
         Description = "Introduce el token JWT con el prefijo 'Bearer '. Ejemplo: \"Bearer {token}\""
     });
 
-    opciones.AddSecurityRequirement(_ => new OpenApiSecurityRequirement
+    opciones.AddSecurityRequirement(documento => new OpenApiSecurityRequirement
     {
-        { new OpenApiSecuritySchemeReference("Bearer", null, null), new List<string>() }
+        { new OpenApiSecuritySchemeReference("Bearer", documento), new List<string>() }
     });
 });
 

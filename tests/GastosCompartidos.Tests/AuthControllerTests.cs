@@ -15,7 +15,7 @@ public class AuthControllerTests(GastosCompartidosWebApplicationFactory fabrica)
 
         var respuesta = await _cliente.PostAsJsonAsync("/api/auth/registro", request);
 
-        Assert.Equal(HttpStatusCode.OK, respuesta.StatusCode);
+        Assert.Equal(HttpStatusCode.Created, respuesta.StatusCode);
         var body = await respuesta.Content.ReadFromJsonAsync<AuthResponseDto>();
         Assert.NotNull(body);
         Assert.False(string.IsNullOrWhiteSpace(body!.Token));
@@ -28,7 +28,7 @@ public class AuthControllerTests(GastosCompartidosWebApplicationFactory fabrica)
         var request = new RegistroRequest("Bea", email, "ContrasenaSegura123");
 
         var primeraRespuesta = await _cliente.PostAsJsonAsync("/api/auth/registro", request);
-        Assert.Equal(HttpStatusCode.OK, primeraRespuesta.StatusCode);
+        Assert.Equal(HttpStatusCode.Created, primeraRespuesta.StatusCode);
 
         var segundaRespuesta = await _cliente.PostAsJsonAsync("/api/auth/registro", request);
 
