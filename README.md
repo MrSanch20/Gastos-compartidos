@@ -32,7 +32,7 @@ API REST en **.NET** para gestionar gastos compartidos entre grupos de personas 
 
 ---
 
-## 🔌 Endpoints previstos
+## 🔌 Endpoints
 
 ### Autenticación
 | Método | Ruta | Descripción |
@@ -63,6 +63,11 @@ API REST en **.NET** para gestionar gastos compartidos entre grupos de personas 
 | GET | `/api/grupos/{id}/saldos` | Saldo de cada miembro |
 | GET | `/api/grupos/{id}/saldar` | Propuesta de pagos para quedar en paz ⭐ |
 | POST | `/api/grupos/{id}/liquidaciones` | Registrar un pago entre miembros |
+
+### Estado
+| Método | Ruta | Descripción |
+|---|---|---|
+| GET | `/api/estado` | Comprobar que la API está en marcha |
 
 ---
 
